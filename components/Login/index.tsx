@@ -1,5 +1,5 @@
 import styles from './index.module.scss'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 interface IProps {
   isShow: boolean,
   onClose: Function
@@ -29,8 +29,8 @@ const Login = (props: IProps) => {
 
   }
 
-  const handleFormChange = (e) => {
-    const { name, value} = e?.target
+  const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value} = e.target;
     setForm({
       ...form,
       [name]: value
