@@ -28,7 +28,16 @@ const Login = (props: IProps) => {
       return
     }
 
-    request.post('/api/user/sendVerifyCode')
+    request.post('/api/user/sendVerifyCode', {
+      to: form?.phone,
+      templateId: 1
+    }).then((res: any) => {
+      if (res?.code === 0) {
+        setIsShowVerifyCode(true)
+      } else {
+        message.error(res?.msg || '未知错误')
+      }
+    })
   }
 
   const handleLogin = () => {
