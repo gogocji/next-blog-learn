@@ -1,0 +1,26 @@
+.navbar {
+  height: 60px;
+  background-color:white;
+  border-bottom: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .logoArea {
+    font-size: 30px;
+    font-weight: bolder;
+    margin-right: 60px;
+  }
+
+  .linkArea {
+    a {
+      font-size: 18px;
+      padding: 0 20px;
+      color: #515767;
+    }
+    .active {
+      color: #1e80ff;
+      font-weight: bold;
+    }
+  }
+}
