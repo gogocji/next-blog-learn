@@ -1,18 +1,19 @@
 import styles from './index.module.scss'
 import { ChangeEvent, useState } from 'react'
+import { message } from 'antd'
 import CountDown from 'components/CountDown'
+import request from 'service/fetch'
 interface IProps {
   isShow: boolean,
   onClose: Function
 }
 
 const Login = (props: IProps) => {
-  console.log(props)
   const { isShow = false, onClose } = props;
   const [isShowVerifyCode, setIsShowVerifyCode] = useState(false)
   const [ form, setForm ] = useState({
     phone: '',
-    varify: ''
+    verify: ''
   })
 
   const handleClose = () => {
@@ -20,7 +21,14 @@ const Login = (props: IProps) => {
   }
 
   const handleGetVerifyCode = () => {
-    setIsShowVerifyCode(true)
+    // setIsShowVerifyCode(true)
+    // 校验用户输入的手机号
+    if (!form?.phone) {
+      message.warning('请输入手机号')
+      return
+    }
+
+    request.post('/api/user/sendVerifyCode')
   }
 
   const handleLogin = () => {
@@ -52,9 +60,9 @@ const Login = (props: IProps) => {
               x
             </div>
           </div>
-          <input type="text" placeholder="请输入手机号" value={form.phone} onChange={handleFormChange}/>
+          <input type="text" placeholder="请输入手机号" name="phone" value={form.phone} onChange={handleFormChange}/>
           <div className={styles.verifyCodeArea}>
-            <input type="text" placeholder="请输入验证码" value={form.varify} onChange={handleFormChange}/>
+            <input t ype="text" placeholder="请输入验证码" name="verify" value={form.verify} onChange={handleFormChange}/>
             <span className={styles.verifyCode} onClick={handleGetVerifyCode}>
               { isShowVerifyCode ? <CountDown time={10} onEnd={handleCountDownEnd} /> : '获取验证码'}
             </span>
