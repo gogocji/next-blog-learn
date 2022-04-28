@@ -73,7 +73,7 @@ const Login = (props: IProps) => {
           <div className={styles.verifyCodeArea}>
             <input t ype="text" placeholder="请输入验证码" name="verify" value={form.verify} onChange={handleFormChange}/>
             <span className={styles.verifyCode} onClick={handleGetVerifyCode}>
-              { isShowVerifyCode ? <CountDown time={10} onEnd={handleCountDownEnd} /> : '获取验证码'}
+              { isShowVerifyCode ? <CountDown time={60} onEnd={handleCountDownEnd} /> : '获取验证码'}
             </span>
           </div>
           <div className={styles.loginBtn} onClick={handleLogin}>登录</div>

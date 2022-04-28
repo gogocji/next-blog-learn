@@ -4,8 +4,14 @@ import md5 from 'md5'
 import { NextApiRequest, NextApiResponse} from "next"
 import { encode } from "js-base64"
 import request from 'service/fetch'
+import { withIronSessionApiRoute } from 'iron-session/next'
+import { ironOptions } from "config"
+import { ISession } from "pages/api/index"
 
-export default async function sendVerifyCode(req: NextApiRequest, res: NextApiResponse) {
+export default withIronSessionApiRoute(sendVerifyCode, ironOptions)
+
+async function sendVerifyCode(req: NextApiRequest, res: NextApiResponse) {
+  const session = req.session as ISession
   const { to = '', templateId = '1' } = req.body
   const AppId = '8a216da8806a75aa01806f2a080801c7'
   const AccountId = '8a216da8806a75aa01806f2a06ff01c1'
@@ -28,11 +34,23 @@ export default async function sendVerifyCode(req: NextApiRequest, res: NextApiRe
       Authorization
     }
   })
-  console.log('response', response)
-  console.log(to, templateId)
-  console.log(SigParameter, Authorization)
-  res.status(200).json({
-    code: 0,
-    data: 123
-  })
+  
+  // TODO：暂时性写any，后面还要定义response的类型
+  const { statusCode, statusMsg, templateSMS } = response as any
+  if (statusCode === '000000') {
+    session.verifyCode = verifyCode
+    await session.save()
+    res.status(200).json({
+      code: 0,
+      msg: statusMsg,
+      data: {
+        templateSMS
+      }
+    })
+  } else {
+    res.status(200).json({
+      code: statusCode,
+      data: statusMsg
+    })
+  }
 }
