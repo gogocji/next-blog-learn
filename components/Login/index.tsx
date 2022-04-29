@@ -1,6 +1,7 @@
 import styles from './index.module.scss'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, StrictMode, useState } from 'react'
 import { message } from 'antd'
+import { useStore } from 'store/index'
 import CountDown from 'components/CountDown'
 import request from 'service/fetch'
 interface IProps {
@@ -9,6 +10,7 @@ interface IProps {
 }
 
 const Login = (props: IProps) => {
+  const store = useStore()
   const { isShow = false, onClose } = props;
   const [isShowVerifyCode, setIsShowVerifyCode] = useState(false)
   const [ form, setForm ] = useState({
@@ -47,6 +49,8 @@ const Login = (props: IProps) => {
     }).then((res: any) => {
       if (res?.code === 0) {
         // 登录成功
+         store.user.setUserInfo(res?.data)
+         console.log("1111", store)
         onClose && onClose()
       } else {
         message.error(res?.msg || '未知错误')
