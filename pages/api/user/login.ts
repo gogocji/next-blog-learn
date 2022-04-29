@@ -4,15 +4,17 @@ import { ironOptions } from "config"
 import { ISession } from "pages/api/index"
 import { prepareConnection } from "db/index"
 import { User, UserAuth} from 'db/entity/index'
+import { Cookie } from 'next-cookie'
+import { setCookie } from "utils"
 
 export default withIronSessionApiRoute(login, ironOptions)
 
 async function login(req: NextApiRequest, res: NextApiResponse) {
   const session: ISession = req.session
+  const cookies = Cookie.fromApiRoute(req, res)
   const { phone = '', verify = '', identity_type = 'phone' } = req.body
   const db = await prepareConnection();
 
-  const userRepo = db.getRepository(User)
   const userAuthRepo = db.getRepository(UserAuth)
 
   if (String(session.verifyCode) === String(verify)) {
@@ -34,6 +36,8 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
       session.avatar = avatar
 
       await session.save()
+
+      setCookie(cookies, { id, nickname, avatar })
 
       res?.status(200).json({
         msg: '登录成功',
@@ -65,6 +69,8 @@ async function login(req: NextApiRequest, res: NextApiResponse) {
       session.nickname = nickname
       session.avatar = avatar
       await session.save()
+
+      setCookie(cookies, { id, nickname, avatar })
 
       res?.status(200).json({
         msg: '登录成功',
