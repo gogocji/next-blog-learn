@@ -4,6 +4,8 @@ import { message } from 'antd'
 import { useStore } from 'store/index'
 import CountDown from 'components/CountDown'
 import request from 'service/fetch'
+import { observer } from "mobx-react-lite"
+
 interface IProps {
   isShow: boolean,
   onClose: Function
@@ -108,5 +110,5 @@ const Login = (props: IProps) => {
   );
 }
 
-export default Login
+export default observer(Login)
 

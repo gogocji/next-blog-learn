@@ -8,6 +8,8 @@ import { useState } from 'react'
 import Login from 'components/Login/index'
 import { useStore } from 'store/index';
 import { LoginOutlined, HomeOutlined } from '@ant-design/icons'
+import request from 'service/fetch'
+import { observer } from "mobx-react-lite"
 
 const Navbar: NextPage = () => {
   const store = useStore()
@@ -27,14 +29,25 @@ const Navbar: NextPage = () => {
     setIsShowLogin(false);
   }
 
+  const handleGotoPersonalPage = () => {
+
+  }
+
+  const handleLogout = () => {
+    request.post('/api/user/logout').then((res: any) =>{
+      if (res?.code === 0) {
+        store.user.setUserInfo({})
+      }
+    })
+  }
   const renderDropDownMenu = () => {
     return (
       <Menu>
-        <Menu.Item>
+        <Menu.Item onClick={handleGotoPersonalPage}>
           <HomeOutlined/>
           &nbsp; 个人主页
         </Menu.Item>
-        <Menu.Item>
+        <Menu.Item onClick={handleLogout}>
           <LoginOutlined/>
           &nbsp; 退出系统
         </Menu.Item>
@@ -73,5 +86,5 @@ const Navbar: NextPage = () => {
   );
 };
 
-export default Navbar;
+export default observer(Navbar);
 

@@ -10,7 +10,7 @@ import { ISession } from "pages/api/index"
 
 export default withIronSessionApiRoute(sendVerifyCode, ironOptions)
 
-async function sendVerifyCode(req: NextApiRequest, res: NextApiResponse) {
+async function sendVerifyCode(req: NextApiRequest, res: NextApiResponse) { 
   const session = req.session as ISession
   const { to = '', templateId = '1' } = req.body
   const AppId = '8a216da8806a75aa01806f2a080801c7'

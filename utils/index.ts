@@ -26,3 +26,24 @@ export const setCookie = (
     expires
   })
 }
+
+export const clearCookie = (
+  cookies: any
+) => {
+  // 登录时效，24h
+  const expires = new Date(Date.now() + 24 * 60 * 60 * 1000)
+  const path = '/'
+
+  cookies.set('userId', '', {
+    path,
+    expires
+  })
+  cookies.set('nickname ', '', {
+    path,
+    expires
+  })
+  cookies.set('avatar', '', {
+    path,
+    expires
+  })
+}
