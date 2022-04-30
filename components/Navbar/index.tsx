@@ -34,7 +34,7 @@ const Navbar: NextPage = () => {
   }
 
   const handleGotoPersonalPage = () => {
-    push('/user/${userId}');
+    push(`/user/${userId}`);
   }
 
   const handleLogout = () => {
