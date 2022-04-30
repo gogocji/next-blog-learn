@@ -2,8 +2,8 @@ import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
 import dynamic from 'next/dynamic';
 import { observer } from 'mobx-react-lite';
-import { ChangeEvent, useState } from 'react';
-import { Input, Button, message } from 'antd';
+import { ChangeEvent, useState, useEffect } from 'react';
+import { Input, Button, message, Select } from 'antd';
 import { useRouter } from 'next/router';
 import { prepareConnection } from 'db/index';
 import { Article } from 'db/entity';
@@ -40,6 +40,16 @@ const ModifyEditor = ({ article }: IProps) => {
   const articleId = Number(query?.id)
   const [title, setTitle] = useState(article?.title || '');
   const [content, setContent] = useState(article?.content || '');
+  const [tagIds, setTagIds] = useState([]);
+  const [allTags, setAllTags] = useState([]);
+
+  useEffect(() => {
+    request.get('/api/tag/get').then((res: any) => {
+      if (res?.code === 0) {
+        setAllTags(res?.data?.allTags || [])
+      }
+    })
+  }, []);
 
   const handlePublish = () => {
     if (!title) {
@@ -50,6 +60,7 @@ const ModifyEditor = ({ article }: IProps) => {
       id: articleId,
       title,
       content,
+      tagIds
     }).then((res: any) => {
       if (res?.code === 0) {
         articleId ? push(`/article/${articleId}`) : push('/');
@@ -68,6 +79,10 @@ const ModifyEditor = ({ article }: IProps) => {
     setContent(content);
   };
 
+  const handleSelectTag = (value: []) => {
+    setTagIds(value);
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.operation}>
@@ -77,6 +92,15 @@ const ModifyEditor = ({ article }: IProps) => {
           value={title}
           onChange={handleTitleChange}
         />
+        <Select
+          className={styles.tag}
+          mode="multiple"
+          allowClear
+          placeholder="请选择标签"
+          onChange={handleSelectTag}
+        >{allTags?.map((tag: any) => (
+          <Select.Option key={tag?.id} value={tag?.id}>{tag?.title}</Select.Option>
+        ))}</Select>
         <Button
           className={styles.button}
           type="primary"

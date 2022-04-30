@@ -17,6 +17,7 @@ const NewEditor = () => {
   const { userId } = store.user.userInfo;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [tagIds, setTagIds] = useState([]);
   const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
@@ -35,9 +36,10 @@ const NewEditor = () => {
     request.post('/api/article/publish', {
       title,
       content,
+      tagIds
     }).then((res: any) => {
       if (res?.code === 0) {
-        userId ? push(`/user/${userId}`) : push('/')
+        userId ? push(`/user/${userId}`) : push('/');
         message.success('发布成功');
       } else {
         message.error(res?.msg || '发布失败');
@@ -53,6 +55,10 @@ const NewEditor = () => {
     setContent(content);
   };
 
+  const handleSelectTag = (value: []) => {
+    setTagIds(value);
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.operation}>
@@ -67,6 +73,7 @@ const NewEditor = () => {
           mode="multiple"
           allowClear
           placeholder="请选择标签"
+          onChange={handleSelectTag}
         >{allTags?.map((tag: any) => (
           <Select.Option key={tag?.id} value={tag?.id}>{tag?.title}</Select.Option>
         ))}</Select>
