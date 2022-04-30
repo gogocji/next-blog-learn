@@ -53,10 +53,6 @@ const NewEditor = () => {
     setContent(content);
   };
 
-  const handleSelectTag = (value: []) => {
-    setTagIds(value);
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.operation}>
@@ -71,7 +67,6 @@ const NewEditor = () => {
           mode="multiple"
           allowClear
           placeholder="请选择标签"
-          onChange={handleSelectTag}
         >{allTags?.map((tag: any) => (
           <Select.Option key={tag?.id} value={tag?.id}>{tag?.title}</Select.Option>
         ))}</Select>
