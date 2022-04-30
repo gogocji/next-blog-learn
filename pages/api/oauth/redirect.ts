@@ -26,8 +26,8 @@ async function redirect(req: NextApiRequest, res: NextApiResponse) {
     {},
     {
       headers: {
-        accept: 'application/json'
-      }
+        accept: 'application/json',
+      },
     }
   )
   console.log('获取github回调 获取result')

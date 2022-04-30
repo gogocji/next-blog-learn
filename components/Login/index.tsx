@@ -65,7 +65,7 @@ const Login = (props: IProps) => {
   const handleOAuthGithub = () => {
     const githubClientId = 'b38643ee814f81945179'
     const redirectUrl = 'http://localhost:3000/api/oauth/redirect'
-    window.open(`https://github.com/login/oauth/authorize?client_id${githubClientId}&redirect_uri=${redirectUrl}`)
+    window.open(`https://github.com/login/oauth/authorize?client_id=${githubClientId}&redirect_uri=${redirectUrl}`)
   }
 
   const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {

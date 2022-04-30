@@ -36,10 +36,8 @@ const NewEditor = () => {
     request.post('/api/article/publish', {
       title,
       content,
-      tagIds
     }).then((res: any) => {
       if (res?.code === 0) {
-        userId ? push(`/user/${userId}`) : push('/');
         message.success('发布成功');
       } else {
         message.error(res?.msg || '发布失败');
