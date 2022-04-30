@@ -4,6 +4,7 @@ import { ironOptions } from "config"
 import { ISession } from "pages/api/index"
 import { prepareConnection } from "db/index"
 import { User, Article} from 'db/entity/index'
+import { EXCEPTION_ARTICLE } from "../config/codes"
 
 export default withIronSessionApiRoute(publish, ironOptions)
 
@@ -33,6 +34,6 @@ async function publish(req: NextApiRequest, res: NextApiResponse) {
   const resArticle = await articleRepo.save(article);
   console.log('resArticle', resArticle)
   if (resArticle) {
-    res.status(200).json({ data: resArticle, code: 0, msg: '发布成功' });
+    res.status(200).json({ ...EXCEPTION_ARTICLE.PUBLISH_FAILED });
   }
 }
