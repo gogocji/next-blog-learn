@@ -1,7 +1,12 @@
-import type { NextPage } from "next"
+import type { NextPage } from 'next';
+import styles from './index.module.scss';
 
 const Footer: NextPage = () => {
-  return <div>我是导航</div>
-}
+  return (
+    <div className={styles.footer}>
+      <p>陈大杰 Next.js + React 实战</p>
+    </div>
+  );
+};
 
-export default Footer
+export default Footer;
