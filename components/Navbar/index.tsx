@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import styles from './index.module.scss';
 import { navs } from './config';
 import type { NextPage } from 'next'
-import { Button, Avatar, Dropdown, Menu } from 'antd'
+import { Button, Avatar, Dropdown, Menu, message } from 'antd'
 import { useState } from 'react'
 import Login from 'components/Login/index'
 import { useStore } from 'store/index';
@@ -14,11 +14,15 @@ import { observer } from "mobx-react-lite"
 const Navbar: NextPage = () => {
   const store = useStore()
   const { userId, avatar } = store.user.userInfo
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
   const [ isShowLogin, setIsShowLogin ] = useState(false);
 
   const handleGotoEditorPage = () => {
-
+    if (userId) {
+      push('editor/new')
+    } else {
+      message.warning('请先登录')
+    }
   };
 
   const handleLogin = () => {
@@ -30,7 +34,7 @@ const Navbar: NextPage = () => {
   }
 
   const handleGotoPersonalPage = () => {
-
+    push('/user/${userId}');
   }
 
   const handleLogout = () => {

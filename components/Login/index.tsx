@@ -1,5 +1,5 @@
 import styles from './index.module.scss'
-import { ChangeEvent, StrictMode, useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { message } from 'antd'
 import { useStore } from 'store/index'
 import CountDown from 'components/CountDown'
@@ -60,8 +60,12 @@ const Login = (props: IProps) => {
     })
   }
 
+  // client-id:b38643ee814f81945179
+  // client-secret: c137a9e7f13b334e8f7bcc7d90fa3c2357aa1a79
   const handleOAuthGithub = () => {
-
+    const githubClientId = 'b38643ee814f81945179'
+    const redirectUrl = 'http://localhost:3000/api/oauth/redirect'
+    window.open(`https://github.com/login/oauth/authorize?client_id${githubClientId}&redirect_uri=${redirectUrl}`)
   }
 
   const handleFormChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -76,37 +80,39 @@ const Login = (props: IProps) => {
     setIsShowVerifyCode(false)
   }
   return (
-    isShow && (
-      <div className={styles.loginArea}>
-        <div className={styles.loginBox}>
-          <div className={styles.loginTitle}>
-            <p>手机登录</p>
-            <div className={styles.close} onClick={handleClose}>
-              x
+    isShow ? 
+      (
+        <div className={styles.loginArea}>
+          <div className={styles.loginBox}>
+            <div className={styles.loginTitle}>
+              <p>手机登录</p>
+              <div className={styles.close} onClick={handleClose}>
+                x
+              </div>
+            </div>
+            <input type="text" placeholder="请输入手机号" name="phone" value={form.phone} onChange={handleFormChange}/>
+            <div className={styles.verifyCodeArea}>
+              <input type="text" placeholder="请输入验证码" name="verify" value={form.verify} onChange={handleFormChange}/>
+              <span className={styles.verifyCode} onClick={handleGetVerifyCode}>
+                { isShowVerifyCode ? <CountDown time={60} onEnd={handleCountDownEnd} /> : '获取验证码'}
+              </span>
+            </div>
+            <div className={styles.loginBtn} onClick={handleLogin}>登录</div>
+            <div className={styles.otherLogin} onClick={handleOAuthGithub}>使用 Github 登录</div>
+            <div className={styles.loginPrivacy}>
+              注册登录即表示同意{' '}
+              <a
+                href="https://moco.imooc.com/privacy.html"
+                target="_blank"
+                rel="noreferrer"
+              >
+                隐私政策
+              </a>
             </div>
           </div>
-          <input type="text" placeholder="请输入手机号" name="phone" value={form.phone} onChange={handleFormChange}/>
-          <div className={styles.verifyCodeArea}>
-            <input t ype="text" placeholder="请输入验证码" name="verify" value={form.verify} onChange={handleFormChange}/>
-            <span className={styles.verifyCode} onClick={handleGetVerifyCode}>
-              { isShowVerifyCode ? <CountDown time={60} onEnd={handleCountDownEnd} /> : '获取验证码'}
-            </span>
-          </div>
-          <div className={styles.loginBtn} onClick={handleLogin}>登录</div>
-          <div className={styles.otherLogin} onClick={handleOAuthGithub}>使用 Github 登录</div>
-          <div className={styles.loginPrivacy}>
-            注册登录即表示同意{' '}
-            <a
-              href="https://moco.imooc.com/privacy.html"
-              target="_blank"
-              rel="noreferrer"
-            >
-              隐私政策
-            </a>
-          </div>
         </div>
-      </div>
-    )
+      )
+    : null
   );
 }
 

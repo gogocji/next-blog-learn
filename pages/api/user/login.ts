@@ -5,7 +5,7 @@ import { ISession } from "pages/api/index"
 import { prepareConnection } from "db/index"
 import { User, UserAuth} from 'db/entity/index'
 import { Cookie } from 'next-cookie'
-import { setCookie } from "utils"
+import { setCookie } from "utils/index"
 
 export default withIronSessionApiRoute(login, ironOptions)
 
