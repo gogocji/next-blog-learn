@@ -31,8 +31,8 @@ function MyApp({ initialValue, Component, pageProps }: IProps) {
 // TODO: 最好还是自己定义一下类型，不要全部都用any来对类型进行声明了
 MyApp.getInitialProps = async ({ ctx }: { ctx: any }) => {
   console.log('+++++++')
-  console.log(ctx?.req.cookies)
-  const { userId, nickname, avatar } = ctx?.req.cookies || {}
+  console.log(ctx?.req?.cookies)
+  const { userId, nickname, avatar } = ctx?.req?.cookies || {}
 
   return {
     initialValue: {

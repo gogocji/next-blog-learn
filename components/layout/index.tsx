@@ -1,8 +1,7 @@
 import Navbar from "components/Navbar"
 import Footer from "components/Footer"
-import type { NextPage } from "next"
 
-const Layout: NextPage = ( {children} : any ) => {
+const Layout = (children : any ) => {
   return (
     <div>
       <Navbar />
