@@ -14,16 +14,22 @@ interface IProps {
   article: IArticle
 }
 
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params }: any) {
   const articleId = params?.id
   const db = await prepareConnection()
+  const articleRepo = db.getRepository(Article);
   const article = await db.getRepository(Article).find({
     where: {
       id: articleId
     },
     relations: ['user']
   })
-  console.log('article', article)
+
+  if (article) {
+    // 阅读次数 +1
+    article[0].views = article[0]?.views + 1;
+    await articleRepo.save(article[0]);
+  }
   return {
     props: {
       article: JSON.parse(JSON.stringify(article))[0]
@@ -33,11 +39,9 @@ export async function getServerSideProps({ params }) {
 
 const ArticleDetail = (props: IProps) => {
   const { article } = props
-  console.log('store article', article)
   const store = useStore();
   const loginUserInfo = store?.user?.userInfo;
   const { user: { nickname, avatar, id} } = article
-  console.log('nickname', nickname)
   const [inputVal, setInputVal] = useState('');
 
   const handleComment = () => {
