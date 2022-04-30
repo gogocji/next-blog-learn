@@ -34,6 +34,8 @@ async function publish(req: NextApiRequest, res: NextApiResponse) {
   const resArticle = await articleRepo.save(article);
   console.log('resArticle', resArticle)
   if (resArticle) {
-    res.status(200).json({ ...EXCEPTION_ARTICLE.PUBLISH_FAILED });
+    res.status(200).json({ data: resArticle, code: 0, msg: '发布成功' });
+  } else {
+    res.status(200).json({...EXCEPTION_ARTICLE.PUBLISH_FAILED})
   }
 }

@@ -17,7 +17,6 @@ const NewEditor = () => {
   const { userId } = store.user.userInfo;
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [tagIds, setTagIds] = useState([]);
   const [allTags, setAllTags] = useState([]);
 
   useEffect(() => {
@@ -38,6 +37,7 @@ const NewEditor = () => {
       content,
     }).then((res: any) => {
       if (res?.code === 0) {
+        userId ? push(`/user/${userId}`) : push('/')
         message.success('发布成功');
       } else {
         message.error(res?.msg || '发布失败');
