@@ -10,6 +10,41 @@ interface IProps {
   pageProps: any
 }
 
+export function reportWebVitals(mertic: any) {
+  if (mertic.label === 'web-vital') {
+    // console.log('mertic', mertic);
+  }
+
+  switch (mertic.name) {
+    case 'FCP':
+      console.log('FCP', mertic);
+      break;
+    case 'LCP':
+      console.log('LCP', mertic);
+      break;
+    case 'CLS':
+      console.log('CLS', mertic);
+      break;
+    case 'FID':
+      console.log('FID', mertic);
+      break;
+    case 'TTFB':
+      console.log('TTFB', mertic);
+      break;
+    default:
+      break;
+  }
+
+  const body = JSON.stringify(mertic);
+  const url = 'https://xxxx.com';
+
+  if (navigator.sendBeacon) {
+    navigator.sendBeacon(url, body);
+  } else {
+    fetch(url, { body, method: 'POST', keepalive: true })
+  }
+}
+
 function MyApp({ initialValue, Component, pageProps }: IProps) {
   const renderLayout = () => {
     if ((Component as any).layout === null) {
